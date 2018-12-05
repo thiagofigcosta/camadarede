@@ -150,7 +150,7 @@ func getTableFrom💻() -> [RouteItem] {
 
         let to❌:Int=Int(readLine() ?? "-1") ?? -1
 
-        if to❌>0 && to❌<table.count{
+        if to❌>=0 && to❌<table.count{
           table.remove(at: to❌)
         }
 
