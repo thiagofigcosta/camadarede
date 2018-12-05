@@ -119,7 +119,7 @@ func route(IP:IPv4, table: [RouteItem]) -> IPv4? {
   return nil
 }
 
-func getTableFrom⌨() -> [RouteItem] {
+func getTableFrom💻() -> [RouteItem] {
   var table:[RouteItem]=[]
   var 🎲:String=" "
   while 🎲 != "E" {
@@ -186,4 +186,4 @@ func getTableFrom⌨() -> [RouteItem] {
   return table
 }
 
-var RouteTable: [RouteItem] = getTableFrom⌨()
+var RouteTable: [RouteItem] = getTableFrom💻()
