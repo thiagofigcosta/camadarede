@@ -101,23 +101,6 @@ class RouteItem {
   }
 }
 
-func route(IP:IPv4, table: [RouteItem]) -> IPv4? {
-  var defaultGate:RouteItem? = nil
-  for item in table {
-    if (item.Net🎭.intValue==item.NetworkDestination.intValue  && item.Net🎭.intValue==IPv4().intValue){
-      defaultGate=item
-    }
-    if item.CheckSubNet(ip:IP) {
-      return item.Interface
-    }
-  }
-
-  if let defaultGate = defaultGate{
-    return defaultGate.Interface
-  }
-
-  return nil
-}
 
 func getTableFrom💻() -> [RouteItem] {
   var table:[RouteItem]=[]
@@ -184,6 +167,30 @@ func getTableFrom💻() -> [RouteItem] {
   }
 
   return table
+}
+
+extension [RouteItem]{
+
+  func route(IP:IPv4) -> IPv4? {
+
+    var defaultGate:RouteItem? = nil
+
+    for item in self {
+      if (item.Net🎭.intValue==item.NetworkDestination.intValue  && item.Net🎭.intValue==IPv4().intValue){
+        defaultGate=item
+      }
+      if item.CheckSubNet(ip:IP) {
+        return item.Interface
+      }
+    }
+
+    if let defaultGate = defaultGate{
+      return defaultGate.Interface
+    }
+
+    return nil
+  }
+  
 }
 
 var RouteTable: [RouteItem] = getTableFrom💻()
