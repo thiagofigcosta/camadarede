@@ -4,7 +4,7 @@ makepre:
 	swiftc swiftepc.swift -o swiftepc
 
 make: makepre
-	./swiftepc *.swift -o network
+	./swiftepc rede.swift -o network
 
 run:
 	./network

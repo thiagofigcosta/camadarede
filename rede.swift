@@ -92,3 +92,54 @@ class RouteItem {
   }
 }
 
+func route(IP:IPv4, table: [RouteItem]) -> Destination:IPv4 {
+  let defaultGate
+  for item in table {
+    if (item.Netmask==item.NetworkDestination==IPv4()){
+      defaultGate=item
+    }
+    if item.CheckSubNet(IP) {
+      return item.interface
+    }
+  }
+  if defaultGate {
+    return defaultGate.interface
+  }
+}
+
+func getTableFromUser() -> [RouteItem] {
+  var option:Character=" "
+
+  while option!="E" {
+    print ("Digite um comando abaixo:") 
+    print ("--------------------------------------") 
+    print ("S - Exibe a tabela de roteamento")
+    print ("A - Adicionar um novo item na tabela")
+    print ("R - Remover um item da tabela")
+    print ("D - Carregar a tabela padrão")
+    print ("E - Salvar tabela e sair do menu")
+    print ("--------------------------------------") 
+
+    let line=readLine()
+    option= line.count>0 ? line.prefix(1).uppercased() : " "
+
+    switch option {
+      case "S":
+      case "A":
+      case "R":
+      case "D":
+      case "E":
+      default:
+    }
+    print ("Digite o ip (x.x.x.x) da rede")
+  }
+
+   var NetworkDestination: IPv4
+   var Netmask: IPv4 
+   var Gateway: IPv4 
+   var Interface: IPv4 
+   var Metric: Int
+  
+}
+
+var RouteTable: [RouteItem] = getTableFromUser()
