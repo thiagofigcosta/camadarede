@@ -172,67 +172,94 @@ func getTableFrom💻() -> [RouteItem] {
 class 📦{
 
 	init(packet📦:Data) {
-		let string:String = String(decoding: packet📦, as: UTF8.self)
-		for i in 0..<string.count {
-			let idx=string.index[string.startIndex, offsetBy: i]
-			let unicodeValue=string[idx].unicodeScalars.map { $0.value }.reduce(0, +)
+		let 🎁:String = String(decoding: packet📦, as: UTF8.self)
+		for i in 0..<🎁.count {
+			let idx=🎁.index[🎁.startIndex, offsetBy: i]
+			let unicodeVal🌚=🎁[idx].unicodeScalars.map { $0.value }.reduce(0, +)
 			switch i {
 				case 0:
-					Version⚡=(unicodeValue>>4)&0b1111
-					InternetHeaderLength⚡=unicodeValue&0b1111
+					Version⚡=(unicodeVal🌚>>4)&0b1111
+					InternetHeaderLength⚡=unicodeVal🌚&0b1111
 				case 1:
-					Precedence=(unicodeValue>>5)&0b111
-					NormalDelay=(unicodeValue>>4)&0b1
-					NormalThroughput=(unicodeValue>>3)&0b1
-					NormalRelibility=(unicodeValue>>2)&0b1
-					TotalLength⚡=(unicodeValue&0b11)<<14 //2 of 16
+					Precedence=(unicodeVal🌚>>5)&0b111
+					NormalDelay=(unicodeVal🌚>>4)&0b1
+					NormalThroughput=(unicodeVal🌚>>3)&0b1
+					NormalRelibility=(unicodeVal🌚>>2)&0b1
+					TotalLength⚡=(unicodeVal🌚&0b11)<<14 //2 of 16
 				case 2:
-					TotalLength⚡=TotalLength⚡|unicodeValue<<6 //10 of 16
+					TotalLength⚡=TotalLength⚡|unicodeVal🌚<<6 //10 of 16
 				case 3:
-					TotalLength⚡=TotalLength⚡|unicodeValue>>2 //16 of 16
-					Identification⚡=unicodeValue&0b11
+					TotalLength⚡=TotalLength⚡|unicodeVal🌚>>2 //16 of 16
+					Identification⚡=unicodeVal🌚&0b11
 				case 4:
-					unicodeValue>>7 //not used
-					DontFragment=(unicodeValue>>6)&0b1
-					MoreFragments=(unicodeValue>>5)&0b1
-					Offset⚡=((unicodeValue>>4)&0b11111)<<11 //5 of 16
+					unicodeVal🌚>>7 //not used
+					DontFragment=(unicodeVal🌚>>6)&0b1
+					MoreFragments=(unicodeVal🌚>>5)&0b1
+					Offset⚡=((unicodeVal🌚>>4)&0b11111)<<11 //5 of 16
 				case 5:
-					Offset⚡=Offset⚡|unicodeValue<<4 //12 of 16
+					Offset⚡=Offset⚡|unicodeVal🌚<<4 //12 of 16
 				case 6:
-					Offset⚡=Offset⚡|(unicodeValue>>4)&0b1111 //16 of 16
-					TimeToLive⚡=(unicodeValue&0b1111)<<4 //4 of 8
+					Offset⚡=Offset⚡|(unicodeVal🌚>>4)&0b1111 //16 of 16
+					TimeToLive⚡=(unicodeVal🌚&0b1111)<<4 //4 of 8
 				case 7:
-					TimeToLive⚡=TimeToLive⚡|(unicodeValue>>4)&0b1111 //8 of 8
-					Protocol⚡=(unicodeValue&0b1111)<<4 //4 of 8
+					TimeToLive⚡=TimeToLive⚡|(unicodeVal🌚>>4)&0b1111 //8 of 8
+					Protocol⚡=(unicodeVal🌚&0b1111)<<4 //4 of 8
 				case 8:
-					Protocol⚡=Protocol⚡|(unicodeValue>>4)&0b1111 //8 of 8
-					HeaderChecksum⚡=(unicodeValue&0b1111)<<12 //4 of 16
+					Protocol⚡=Protocol⚡|(unicodeVal🌚>>4)&0b1111 //8 of 8
+					HeaderChecksum⚡=(unicodeVal🌚&0b1111)<<12 //4 of 16
 				case 9:
-					HeaderChecksum⚡=HeaderChecksum⚡|unicodeValue<<12 //12 of 16
+					HeaderChecksum⚡=HeaderChecksum⚡|unicodeVal🌚<<12 //12 of 16
 				case 10:
-					HeaderChecksum⚡=HeaderChecksum⚡|(unicodeValue>>4)&0b1111 //16 of 16
-					SourceAddr⚡=(unicodeValue&0b1111)<<28 //4 of 32
+					HeaderChecksum⚡=HeaderChecksum⚡|(unicodeVal🌚>>4)&0b1111 //16 of 16
+					SourceAddr⚡=(unicodeVal🌚&0b1111)<<28 //4 of 32
 				case 11:
-					SourceAddr⚡=SourceAddr⚡|unicodeValue<<20 //12 of 32
+					SourceAddr⚡=SourceAddr⚡|unicodeVal🌚<<20 //12 of 32
 				case 12:
-					SourceAddr⚡=SourceAddr⚡|unicodeValue<<12 //20 of 32
+					SourceAddr⚡=SourceAddr⚡|unicodeVal🌚<<12 //20 of 32
 				case 13:
-					SourceAddr⚡=SourceAddr⚡|unicodeValue<<4 //28 of 32
+					SourceAddr⚡=SourceAddr⚡|unicodeVal🌚<<4 //28 of 32
 				case 14:
-					SourceAddr⚡=SourceAddr⚡|(unicodeValue>>4)&0b1111 //32 of 32
-					DestinationAddr⚡=(unicodeValue&0b1111)<<28 //4 of 32
+					SourceAddr⚡=SourceAddr⚡|(unicodeVal🌚>>4)&0b1111 //32 of 32
+					DestinationAddr⚡=(unicodeVal🌚&0b1111)<<28 //4 of 32
 				case 15:
-					DestinationAddr⚡=DestinationAddr⚡|unicodeValue<<20 //12 of 32
+					DestinationAddr⚡=DestinationAddr⚡|unicodeVal🌚<<20 //12 of 32
 				case 16:
-					DestinationAddr⚡=DestinationAddr⚡|unicodeValue<<12 //20 of 32
+					DestinationAddr⚡=DestinationAddr⚡|unicodeVal🌚<<12 //20 of 32
 				case 17:
-					DestinationAddr⚡=DestinationAddr⚡|unicodeValue<<4 //28 of 32
+					DestinationAddr⚡=DestinationAddr⚡|unicodeVal🌚<<4 //28 of 32
 				case 18:
-					DestinationAddr⚡=DestinationAddr⚡|(unicodeValue>>4)&0b1111 //32 of 32
-					//set Options⚡
-					//define header size and total size on toString and toBin
-
+					DestinationAddr⚡=DestinationAddr⚡|(unicodeVal🌚>>4)&0b1111 //32 of 32
+					let 🤯size=4+4+8+16+16+3+13+8+8+16+32+32
+					let ⚙size=(getRealInternetHeaderLength⚡()-🤯size)
+					if ⚙size>0{
+						Options⚡=String(unicodeVal🌚&0b1111, radix: 2)
+						var ⚙byteSize=(⚙size-4)/8 
+						⚙byteSize.round(.up)
+						let ⚙ByteSize=(⚙size-4)/8 
+						let 🔜idx = 🎁.index(🎁.startIndex, offsetBy: i+1)
+						let 🔚idx = 🎁.index(🔜idx, offsetBy:⚙byteSize,limitedBy: 🎁.endIndex)
+						let ⚙str=String(🎁[🔜idx..<🔚idx])
+						for char in ⚙str{
+							unicodeVal🌚=char.unicodeScalars.map { $0.value }.reduce(0, +)
+							Options⚡+=String(unicodeVal🌚,radix:2).0⃣🤔😂😂😂😂(8)
+						}						
+						Datagram⚡+=🎁.suffix(i+1+⚙byteSize)
+					}else{
+						Options⚡=""
+						Datagram⚡+=🎁.suffix(i+1)
+					}
+					break
 			}
+		}
+
+		if getRealInternetHeaderLength⚡()+Datagram⚡.count*8!=getRealTotalLength⚡(){
+			//TODO error
+			print("Error on packet size")
+		}
+
+		if(!✅➕()){
+			//TODO error
+			print("Wrong checksum")
 		}
 	}
 
@@ -272,34 +299,35 @@ class 📦{
 	var HeaderChecksum⚡:UInt16=0b0000000000000000
 	var SourceAddr⚡:UInt32=0b00000000000000000000000000000000
 	var DestinationAddr⚡:UInt32=0b00000000000000000000000000000000
-	var Options⚡:UInt32=0b00000000000000000000000000000000
+	var Options⚡:String=""
 	let Padding⚡:UInt32=0
 	var Datagram⚡:String=""
 
-
-
-	func toString() -> String {
-		var ↪️:String=""
-		↪️+=String(Version⚡,radix:2).0⃣🤔😂😂😂😂(4)
-		↪️+=String(InternetHeaderLength⚡,radix:2).0⃣🤔😂😂😂😂(4)
-		↪️+=String(TypeOfService⚡,radix:2).0⃣🤔😂😂😂😂(8)
-		↪️+=String(TotalLength⚡,radix:2).0⃣🤔😂😂😂😂(16)
-		↪️+=String(Identification⚡,radix:2).0⃣🤔😂😂😂😂(16)
-		↪️+=String(Flags⚡,radix:2).0⃣🤔😂😂😂😂(3)
-		↪️+=String(Offset⚡,radix:2).0⃣🤔😂😂😂😂(13)
-		↪️+=String(TimeToLive⚡,radix:2).0⃣🤔😂😂😂😂(8)
-		↪️+=String(Protocol⚡,radix:2).0⃣🤔😂😂😂😂(8)
-		↪️+=String(HeaderChecksum⚡,radix:2).0⃣🤔😂😂😂😂(16)
-		↪️+=String(SourceAddr⚡,radix:2).0⃣🤔😂😂😂😂(32)
-		↪️+=String(DestinationAddr⚡,radix:2).0⃣🤔😂😂😂😂(32)
-		var strOptions⚡=String(Options⚡,radix:2)
-		↪️+=strOptions⚡
-		↪️+=String(Padding⚡,radix:2).0⃣🤔😂😂😂😂((32-strOptions⚡.count)%32)
-		↪️+=Datagram⚡
-		return ↪️
+	func gen✅➕(){
+		var tmp:String=""
+		tmp+=String(Version⚡,radix:2).0⃣🤔😂😂😂😂(4)
+		tmp+=String(InternetHeaderLength⚡,radix:2).0⃣🤔😂😂😂😂(4)
+		tmp+=String(TypeOfService⚡,radix:2).0⃣🤔😂😂😂😂(8)
+		tmp+=String(TotalLength⚡,radix:2).0⃣🤔😂😂😂😂(16)
+		tmp+=String(Identification⚡,radix:2).0⃣🤔😂😂😂😂(16)
+		tmp+=String(Flags⚡,radix:2).0⃣🤔😂😂😂😂(3)
+		tmp+=String(Offset⚡,radix:2).0⃣🤔😂😂😂😂(13)
+		tmp+=String(TimeToLive⚡,radix:2).0⃣🤔😂😂😂😂(8)
+		tmp+=String(Protocol⚡,radix:2).0⃣🤔😂😂😂😂(8)
+		tmp+=String(SourceAddr⚡,radix:2).0⃣🤔😂😂😂😂(32)
+		tmp+=String(DestinationAddr⚡,radix:2).0⃣🤔😂😂😂😂(32)
+		tmp+=Options⚡
+		tmp+=String(Padding⚡,radix:2).0⃣🤔😂😂😂😂((32-Options⚡.count)%32)
+		var intArr:[String]=tmp.splitedBy(16)
+		var ➕=0
+		for int in intArr{
+			➕+=UInt32(int, radix:2)
+		}
+		➕=~((➕>>28)+➕)
+		HeaderChecksum⚡=UInt16(➕)
 	}
 
-	func toBin() -> Data {
+	func ✅➕() -> Bool {
 		var tmp:String=""
 		tmp+=String(Version⚡,radix:2).0⃣🤔😂😂😂😂(4)
 		tmp+=String(InternetHeaderLength⚡,radix:2).0⃣🤔😂😂😂😂(4)
@@ -313,9 +341,64 @@ class 📦{
 		tmp+=String(HeaderChecksum⚡,radix:2).0⃣🤔😂😂😂😂(16)
 		tmp+=String(SourceAddr⚡,radix:2).0⃣🤔😂😂😂😂(32)
 		tmp+=String(DestinationAddr⚡,radix:2).0⃣🤔😂😂😂😂(32)
-		var strOptions⚡=String(Options⚡,radix:2)
-		tmp+=strOptions⚡
-		tmp+=String(Padding⚡,radix:2).0⃣🤔😂😂😂😂((32-strOptions⚡.count)%32)
+		tmp+=Options⚡
+		tmp+=String(Padding⚡,radix:2).0⃣🤔😂😂😂😂((32-Options⚡.count)%32)
+		var intArr:[String]=tmp.splitedBy(16)
+		var ➕=0
+		for int in intArr{
+			➕+=UInt32(int, radix:2)
+		}
+		➕=~((➕>>28)+➕)
+		return ➕==0
+	}
+
+	func fixSizes(){
+		InternetHeaderLength⚡=(4+4+8+16+16+3+13+8+8+16+32+32+Options⚡.count+(32-Options⚡.count)%32)
+		TotalLength⚡=InternetHeaderLength⚡+Datagram⚡.count*8
+		InternetHeaderLength⚡/=32
+		TotalLength⚡/=64
+	}
+
+	func toString() -> String {
+		fixSizes()
+		gen✅➕()
+		var ↪️:String=""
+		↪️+=String(Version⚡,radix:2).0⃣🤔😂😂😂😂(4)
+		↪️+=String(InternetHeaderLength⚡,radix:2).0⃣🤔😂😂😂😂(4)
+		↪️+=String(TypeOfService⚡,radix:2).0⃣🤔😂😂😂😂(8)
+		↪️+=String(TotalLength⚡,radix:2).0⃣🤔😂😂😂😂(16)
+		↪️+=String(Identification⚡,radix:2).0⃣🤔😂😂😂😂(16)
+		↪️+=String(Flags⚡,radix:2).0⃣🤔😂😂😂😂(3)
+		↪️+=String(Offset⚡,radix:2).0⃣🤔😂😂😂😂(13)
+		↪️+=String(TimeToLive⚡,radix:2).0⃣🤔😂😂😂😂(8)
+		↪️+=String(Protocol⚡,radix:2).0⃣🤔😂😂😂😂(8)
+		↪️+=String(HeaderChecksum⚡,radix:2).0⃣🤔😂😂😂😂(16)
+		↪️+=String(SourceAddr⚡,radix:2).0⃣🤔😂😂😂😂(32)
+		↪️+=String(DestinationAddr⚡,radix:2).0⃣🤔😂😂😂😂(32)
+		↪️+=Options⚡
+		↪️+=String(Padding⚡,radix:2).0⃣🤔😂😂😂😂((32-Options⚡.count)%32)
+		↪️+=Datagram⚡
+		return ↪️
+	}
+
+	func toBin() -> Data {
+		fixSizes()
+		gen✅➕()
+		var tmp:String=""
+		tmp+=String(Version⚡,radix:2).0⃣🤔😂😂😂😂(4)
+		tmp+=String(InternetHeaderLength⚡,radix:2).0⃣🤔😂😂😂😂(4)
+		tmp+=String(TypeOfService⚡,radix:2).0⃣🤔😂😂😂😂(8)
+		tmp+=String(TotalLength⚡,radix:2).0⃣🤔😂😂😂😂(16)
+		tmp+=String(Identification⚡,radix:2).0⃣🤔😂😂😂😂(16)
+		tmp+=String(Flags⚡,radix:2).0⃣🤔😂😂😂😂(3)
+		tmp+=String(Offset⚡,radix:2).0⃣🤔😂😂😂😂(13)
+		tmp+=String(TimeToLive⚡,radix:2).0⃣🤔😂😂😂😂(8)
+		tmp+=String(Protocol⚡,radix:2).0⃣🤔😂😂😂😂(8)
+		tmp+=String(HeaderChecksum⚡,radix:2).0⃣🤔😂😂😂😂(16)
+		tmp+=String(SourceAddr⚡,radix:2).0⃣🤔😂😂😂😂(32)
+		tmp+=String(DestinationAddr⚡,radix:2).0⃣🤔😂😂😂😂(32)
+		tmp+=Options⚡
+		tmp+=String(Padding⚡,radix:2).0⃣🤔😂😂😂😂((32-Options⚡.count)%32)
 		var intArr:[String]=tmp.splitedBy(8)
 		var str:String=""
 		for int in intArr{
@@ -351,7 +434,6 @@ extension Array where Element == RouteItem{
 		return nil
 	}
 }
-
 
 extension String{
 	func splitedBy(length: Int) -> [String] {
