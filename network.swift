@@ -179,7 +179,7 @@ func getTableFrom💻() -> [RouteItem] {
 class 📦{
 	init(packet📦:Data) {
 		let 🎁:String = String(decoding: packet📦, as: UTF8.self)
-		for i in 0..<🎁.count {
+		ForLoop: for i in 0..<🎁.count {
 			let idx=🎁.index(🎁.startIndex, offsetBy: i)
 			let unicodeVal🌚=🎁[idx].unicodeScalars.map { $0.value }.reduce(0, +)
 			switch i { // TODO check and fix
@@ -191,7 +191,7 @@ class 📦{
 					NormalDelay=UInt8((unicodeVal🌚>>4)&0b1)
 					NormalThroughput=UInt8((unicodeVal🌚>>3)&0b1)
 					NormalRelibility=UInt8((unicodeVal🌚>>2)&0b1)
-					unicodeVal🌚&0b11 //not used
+					//unicodeVal🌚&0b11 //not used
 
 				case 2:
 					TotalLength⚡=UInt16((unicodeVal🌚)<<8) //8 of 16
@@ -202,20 +202,20 @@ class 📦{
 				case 5:
 					Identification⚡=Identification⚡|UInt16(unicodeVal🌚) //16 of 16
 				case 6:
-					unicodeVal🌚>>7 //not used
-					DontFragment=(unicodeVal🌚>>6)&0b1
-					MoreFragments=(unicodeVal🌚>>5)&0b1
-					Offset⚡=((unicodeVal🌚>>4)&0b11111)<<8 //5 of 13
+					//unicodeVal🌚>>7 //not used
+					DontFragment=UInt8((unicodeVal🌚>>6)&0b1)
+					MoreFragments=UInt8((unicodeVal🌚>>5)&0b1)
+					Offset⚡=UInt16(((unicodeVal🌚>>4)&0b11111)<<8) //5 of 13
 				case 7:
-					Offset⚡=Offset⚡|unicodeVal🌚 //13 of 13
+					Offset⚡=Offset⚡|UInt16(unicodeVal🌚) //13 of 13
 				case 8:
-					TimeToLive⚡=unicodeVal🌚
+					TimeToLive⚡=UInt8(unicodeVal🌚)
 				case 9:
-					Protocol⚡=unicodeVal🌚
+					Protocol⚡=UInt8(unicodeVal🌚)
 				case 10:
-					HeaderChecksum⚡=unicodeVal🌚<<8 //8 of 16
+					HeaderChecksum⚡=UInt16(unicodeVal🌚<<8) //8 of 16
 				case 11:
-					HeaderChecksum⚡=HeaderChecksum⚡|unicodeVal🌚 //16 of 16
+					HeaderChecksum⚡=HeaderChecksum⚡|UInt16(unicodeVal🌚) //16 of 16
 				case 12:
 					SourceAddr⚡=unicodeVal🌚<<24 //8 of 32
 				case 13:
@@ -234,27 +234,30 @@ class 📦{
 					DestinationAddr⚡=DestinationAddr⚡|unicodeVal🌚 //32 of 32
 				case 20:
 					let 🤯size=4+4+8+16+16+3+13+8+8+16+32+32
-					let ⚙size=(getRealInternetHeaderLength⚡()-🤯size)
+					let ⚙size=(Int(getRealInternetHeaderLength⚡())-Int(🤯size))
 					if ⚙size>0{
 						let ⚙byteSize=⚙size/8
-						let 🔜idx = 🎁.index(🎁.startIndex, offsetBy: i)
-						let 🔚idx = 🎁.index(🔜idx, offsetBy:⚙byteSize, limitedBy:🎁.endIndex)
-						let ⚙str=String(🎁[🔜idx..<🔚idx])
+						let 🔜idx = 🎁.index(🎁.startIndex, offsetBy: i, limitedBy:🎁.endIndex)
+						let 🔚idx = 🎁.index(🔜idx!, offsetBy:⚙byteSize, limitedBy:🎁.endIndex)
+						let ⚙str=String(🎁[🔜idx!..<🔚idx!])
 						Options⚡=""
 						for char in ⚙str{
-							unicodeVal🌚=char.unicodeScalars.map { $0.value }.reduce(0, +)
-							Options⚡+=String(unicodeVal🌚,radix:2).0⃣🤔😂😂😂😂(8)
+							let unicodeVal🌚=char.unicodeScalars.map { $0.value }.reduce(0, +)
+							Options⚡+=String(unicodeVal🌚,radix:2).0⃣🤔😂😂😂😂(size:8)
 						}			
 						Datagram⚡+=🎁.suffix(i+⚙byteSize)
 					}else{
 						Options⚡=""
 						Datagram⚡+=🎁.suffix(i)
 					}
-					break
+					break ForLoop
+				default:
+					//TODO error
+					print("Invalid header")
 			}
 		}
 
-		if getRealInternetHeaderLength⚡()+Datagram⚡.count*8!=getRealTotalLength⚡(){
+		if (getRealInternetHeaderLength⚡()+UInt32(Datagram⚡.count*8)) != getRealTotalLength⚡(){
 			//TODO error
 			print("Error on packet size")
 		}
@@ -306,53 +309,52 @@ class 📦{
 	var Datagram⚡:String=""
 
 	func gen✅➕(){
-		var header:String==concatHeader(include✅➕:false)
-		var intArr:[String]=header.splitedBy(16)
-		var ➕=0
+		let header:String=concatHeader(include✅➕:false)
+		let intArr:[String]=header.splitedBy(length:16)
+		var ➕:UInt32=0
 		for int in intArr{
-			➕+=UInt32(int, radix:2)
+			➕+=UInt32(int, radix:2) ?? 0
 		}
-		➕=~((➕>>28)+➕)
+		➕ = ~((➕>>28)+➕)
 		HeaderChecksum⚡=UInt16(➕)
 	}
 
 	func concatHeader(include✅➕:Bool) -> String {
 		var ↪️:String=""
-		↪️+=String(Version⚡,radix:2).0⃣🤔😂😂😂😂(4)
-		↪️+=String(InternetHeaderLength⚡,radix:2).0⃣🤔😂😂😂😂(4)
-		↪️+=String(TypeOfService⚡,radix:2).0⃣🤔😂😂😂😂(8)
-		↪️+=String(TotalLength⚡,radix:2).0⃣🤔😂😂😂😂(16)
-		↪️+=String(Identification⚡,radix:2).0⃣🤔😂😂😂😂(16)
-		↪️+=String(Flags⚡,radix:2).0⃣🤔😂😂😂😂(3)
-		↪️+=String(Offset⚡,radix:2).0⃣🤔😂😂😂😂(13)
-		↪️+=String(TimeToLive⚡,radix:2).0⃣🤔😂😂😂😂(8)
-		↪️+=String(Protocol⚡,radix:2).0⃣🤔😂😂😂😂(8)
+		↪️+=String(Version⚡,radix:2).0⃣🤔😂😂😂😂(size:4)
+		↪️+=String(InternetHeaderLength⚡,radix:2).0⃣🤔😂😂😂😂(size:4)
+		↪️+=String(TypeOfService⚡,radix:2).0⃣🤔😂😂😂😂(size:8)
+		↪️+=String(TotalLength⚡,radix:2).0⃣🤔😂😂😂😂(size:16)
+		↪️+=String(Identification⚡,radix:2).0⃣🤔😂😂😂😂(size:16)
+		↪️+=String(Flags⚡,radix:2).0⃣🤔😂😂😂😂(size:3)
+		↪️+=String(Offset⚡,radix:2).0⃣🤔😂😂😂😂(size:13)
+		↪️+=String(TimeToLive⚡,radix:2).0⃣🤔😂😂😂😂(size:8)
+		↪️+=String(Protocol⚡,radix:2).0⃣🤔😂😂😂😂(size:8)
 		if include✅➕{
-			↪️+=String(HeaderChecksum⚡,radix:2).0⃣🤔😂😂😂😂(16)
+			↪️+=String(HeaderChecksum⚡,radix:2).0⃣🤔😂😂😂😂(size:16)
 		}
-		↪️+=String(SourceAddr⚡,radix:2).0⃣🤔😂😂😂😂(32)
-		↪️+=String(DestinationAddr⚡,radix:2).0⃣🤔😂😂😂😂(32)
+		↪️+=String(SourceAddr⚡,radix:2).0⃣🤔😂😂😂😂(size:32)
+		↪️+=String(DestinationAddr⚡,radix:2).0⃣🤔😂😂😂😂(size:32)
 		↪️+=Options⚡
-		↪️+=String(Padding⚡,radix:2).0⃣🤔😂😂😂😂((32-Options⚡.count)%32)
+		↪️+=String(Padding⚡,radix:2).0⃣🤔😂😂😂😂(size:(32-Options⚡.count)%32)
 		return ↪️
 	}
 
 	func ✅➕() -> Bool {
-		var header:String=concatHeader(include✅➕:true)
-		var intArr:[String]=header.splitedBy(16)
-		var ➕=0
+		let header:String=concatHeader(include✅➕:true)
+		let intArr:[String]=header.splitedBy(length:16)
+		var ➕:UInt32=0
 		for int in intArr{
-			➕+=UInt32(int, radix:2)
+			➕+=UInt32(int, radix:2) ?? 0
 		}
-		➕=~((➕>>28)+➕)
+		➕ = ~((➕>>28)+➕)
 		return ➕==0
 	}
 
 	func fixSizes(){
-		InternetHeaderLength⚡=(4+4+8+16+16+3+13+8+8+16+32+32+Options⚡.count+(32-Options⚡.count)%32)
-		TotalLength⚡=InternetHeaderLength⚡+Datagram⚡.count*8
-		InternetHeaderLength⚡/=32
-		TotalLength⚡/=64
+		let 🤯size=4+4+8+16+16+3+13+8+8+16+32+32
+		InternetHeaderLength⚡=UInt8((🤯size+Options⚡.count+(32-Options⚡.count)%32)/32)
+		TotalLength⚡=UInt16((Int(InternetHeaderLength⚡)*32+Datagram⚡.count*8)/64)
 	}
 
 	func toString() -> String {
@@ -366,8 +368,8 @@ class 📦{
 	func toBin() -> Data {
 		fixSizes()
 		gen✅➕()
-		var header:String=concatHeader(include✅➕:true)
-		var intArr:[String]=header.splitedBy(8)
+		let header:String=concatHeader(include✅➕:true)
+		let intArr:[String]=header.splitedBy(length:8)
 		var str:String=""
 		for int in intArr{
 			str+=String(UnicodeScalar(UInt8(int, radix: 2)!))
@@ -416,7 +418,7 @@ extension String{
 
 	func 0⃣🤔😂😂😂😂(size:Int) -> String { //funcao que coloca a string binaria do tamanho desejado
 		if size<=self.count{
-			return self.prefix(size)
+			return String(self.prefix(size))
 		}else{
 			let leadings:Int=size-self.count
 			return String(repeating: "0", count: leadings)+self
