@@ -2,26 +2,6 @@
 
 import Foundation
 
-// TODO construtor convenience de teste para pacote
-// TODO arrumar construtor do pacote (tinha esquecido de uns bits hehehe)
-/* 	Divisao dos bytes
-		Version⚡				=size: 04 - bytes: 0
-		InternetHeaderLength⚡	=size: 04 - bytes: 0
-		TypeOfService⚡			=size: 08 - bytes: 1
-		TotalLength⚡			=size: 16 - bytes: 2, 3
-		Identification⚡		=size: 16 - bytes: 4, 5
-		Flags⚡					=size: 03 - bytes: 6
-		Offset⚡				=size: 13 - bytes: 6, 7
-		TimeToLive⚡			=size: 08 - bytes: 8
-		Protocol⚡				=size: 08 - bytes: 9
-		HeaderChecksum⚡		=size: 16 - bytes: 10, 11
-		SourceAddr⚡			=size: 32 - bytes: 12, 13, 14, 15
-		DestinationAddr⚡		=size: 32 - bytes: 16, 17, 18, 19
-		Options⚡				=size: ?? - bytes: ??
-		Padding⚡				=size: ?? - bytes: ??
-		Datagram⚡				=size: ?? - bytes: ??
-*/
-
 // TODO funcao de dividir pacotes
 // TODO funcao de mesclar pacotes
 
@@ -197,7 +177,6 @@ func getTableFrom💻() -> [RouteItem] {
 
 
 class 📦{
-
 	init(packet📦:Data) {
 		let 🎁:String = String(decoding: packet📦, as: UTF8.self)
 		for i in 0..<🎁.count {
@@ -212,76 +191,64 @@ class 📦{
 					NormalDelay=UInt8((unicodeVal🌚>>4)&0b1)
 					NormalThroughput=UInt8((unicodeVal🌚>>3)&0b1)
 					NormalRelibility=UInt8((unicodeVal🌚>>2)&0b1)
-					TotalLength⚡=UInt16((unicodeVal🌚&0b11)<<14) //2 of 16
+					unicodeVal🌚&0b11 //not used
+
 				case 2:
-					TotalLength⚡=TotalLength⚡|UInt16(unicodeVal🌚<<6 )//10 of 16
+					TotalLength⚡=UInt16((unicodeVal🌚)<<8) //8 of 16
 				case 3:
-					TotalLength⚡=TotalLength⚡|UInt16(unicodeVal🌚>>2) //16 of 16
-					Identification⚡=UInt16(unicodeVal🌚&0b11) //2 of 16
+					TotalLength⚡=TotalLength⚡|UInt16(unicodeVal🌚) //16 of 16
 				case 4:
-					Identification⚡=Identification⚡|UInt16(unicodeVal🌚<<6) //10 of 16
+					Identification⚡=UInt16(unicodeVal🌚<<8) //8 of 16
 				case 5:
-					Identification⚡=Identification⚡|UInt16(unicodeVal🌚>>2) //16 of 16
-
-
-
-				case 4:
+					Identification⚡=Identification⚡|UInt16(unicodeVal🌚) //16 of 16
+				case 6:
 					unicodeVal🌚>>7 //not used
 					DontFragment=(unicodeVal🌚>>6)&0b1
 					MoreFragments=(unicodeVal🌚>>5)&0b1
-					Offset⚡=((unicodeVal🌚>>4)&0b11111)<<11 //5 of 16
-				case 5:
-					Offset⚡=Offset⚡|unicodeVal🌚<<4 //12 of 16
-				case 6:
-					Offset⚡=Offset⚡|(unicodeVal🌚>>4)&0b1111 //16 of 16
-					TimeToLive⚡=(unicodeVal🌚&0b1111)<<4 //4 of 8
+					Offset⚡=((unicodeVal🌚>>4)&0b11111)<<8 //5 of 13
 				case 7:
-					TimeToLive⚡=TimeToLive⚡|(unicodeVal🌚>>4)&0b1111 //8 of 8
-					Protocol⚡=(unicodeVal🌚&0b1111)<<4 //4 of 8
+					Offset⚡=Offset⚡|unicodeVal🌚 //13 of 13
 				case 8:
-					Protocol⚡=Protocol⚡|(unicodeVal🌚>>4)&0b1111 //8 of 8
-					HeaderChecksum⚡=(unicodeVal🌚&0b1111)<<12 //4 of 16
+					TimeToLive⚡=unicodeVal🌚
 				case 9:
-					HeaderChecksum⚡=HeaderChecksum⚡|unicodeVal🌚<<12 //12 of 16
+					Protocol⚡=unicodeVal🌚
 				case 10:
-					HeaderChecksum⚡=HeaderChecksum⚡|(unicodeVal🌚>>4)&0b1111 //16 of 16
-					SourceAddr⚡=(unicodeVal🌚&0b1111)<<28 //4 of 32
+					HeaderChecksum⚡=unicodeVal🌚<<8 //8 of 16
 				case 11:
-					SourceAddr⚡=SourceAddr⚡|unicodeVal🌚<<20 //12 of 32
+					HeaderChecksum⚡=HeaderChecksum⚡|unicodeVal🌚 //16 of 16
 				case 12:
-					SourceAddr⚡=SourceAddr⚡|unicodeVal🌚<<12 //20 of 32
+					SourceAddr⚡=unicodeVal🌚<<24 //8 of 32
 				case 13:
-					SourceAddr⚡=SourceAddr⚡|unicodeVal🌚<<4 //28 of 32
+					SourceAddr⚡=SourceAddr⚡|unicodeVal🌚<<16 //16 of 32
 				case 14:
-					SourceAddr⚡=SourceAddr⚡|(unicodeVal🌚>>4)&0b1111 //32 of 32
-					DestinationAddr⚡=(unicodeVal🌚&0b1111)<<28 //4 of 32
+					SourceAddr⚡=SourceAddr⚡|unicodeVal🌚<<8 //24 of 32
 				case 15:
-					DestinationAddr⚡=DestinationAddr⚡|unicodeVal🌚<<20 //12 of 32
+					SourceAddr⚡=SourceAddr⚡|unicodeVal🌚 //32 of 32
 				case 16:
-					DestinationAddr⚡=DestinationAddr⚡|unicodeVal🌚<<12 //20 of 32
+					DestinationAddr⚡=unicodeVal🌚<<24 //8 of 32
 				case 17:
-					DestinationAddr⚡=DestinationAddr⚡|unicodeVal🌚<<4 //28 of 32
+					DestinationAddr⚡=DestinationAddr⚡|unicodeVal🌚<<16 //16 of 32
 				case 18:
-					DestinationAddr⚡=DestinationAddr⚡|(unicodeVal🌚>>4)&0b1111 //32 of 32
+					DestinationAddr⚡=DestinationAddr⚡|unicodeVal🌚<<8 //24 of 32
+				case 19:
+					DestinationAddr⚡=DestinationAddr⚡|unicodeVal🌚 //32 of 32
+				case 20:
 					let 🤯size=4+4+8+16+16+3+13+8+8+16+32+32
 					let ⚙size=(getRealInternetHeaderLength⚡()-🤯size)
 					if ⚙size>0{
-						Options⚡=String(unicodeVal🌚&0b1111, radix: 2)
-						var ⚙byteSize=(Double(⚙size)-4)/8.0 
-						⚙byteSize.round(.up)
-						⚙byteSize=UInt32(⚙byteSize)
-						let ⚙ByteSize=(⚙size-4)/8 
-						let 🔜idx = 🎁.index(🎁.startIndex, offsetBy: i+1)
-						let 🔚idx = 🎁.index(🔜idx, offsetBy:⚙byteSize,limitedBy: 🎁.endIndex)
+						let ⚙byteSize=⚙size/8
+						let 🔜idx = 🎁.index(🎁.startIndex, offsetBy: i)
+						let 🔚idx = 🎁.index(🔜idx, offsetBy:⚙byteSize, limitedBy:🎁.endIndex)
 						let ⚙str=String(🎁[🔜idx..<🔚idx])
+						Options⚡=""
 						for char in ⚙str{
 							unicodeVal🌚=char.unicodeScalars.map { $0.value }.reduce(0, +)
 							Options⚡+=String(unicodeVal🌚,radix:2).0⃣🤔😂😂😂😂(8)
-						}						
-						Datagram⚡+=🎁.suffix(i+1+⚙byteSize)
+						}			
+						Datagram⚡+=🎁.suffix(i+⚙byteSize)
 					}else{
 						Options⚡=""
-						Datagram⚡+=🎁.suffix(i+1)
+						Datagram⚡+=🎁.suffix(i)
 					}
 					break
 			}
@@ -298,12 +265,12 @@ class 📦{
 		}
 	}
 
-	let Version⚡:UInt8 = 0b0100
-	var InternetHeaderLength⚡:UInt8=0b0000
+	var Version⚡:UInt8 = 0b0100
+	var InternetHeaderLength⚡:UInt8=0b1111
 	var Precedence:UInt8 = 0b000
-	var NormalDelay:UInt8 = 0b0
+	var NormalDelay:UInt8 = 0b1
 	var NormalThroughput:UInt8 = 0b0
-	var NormalRelibility:UInt8 = 0b0
+	var NormalRelibility:UInt8 = 0b1
 	var TypeOfService⚡:UInt8 {
 		get {
 			return Precedence<<5 | NormalDelay<<4 | NormalThroughput<<3 | NormalRelibility<<2 | 0b00
@@ -316,9 +283,9 @@ class 📦{
 		}
 	}
 	var TotalLength⚡:UInt16=0b0000000000000000
-	var Identification⚡:UInt16=0b0000000000000000
+	var Identification⚡:UInt16=0b1111111111111111
 	var DontFragment:UInt8=0b0
-	var MoreFragments:UInt8=0b0
+	var MoreFragments:UInt8=0b1
 	var Flags⚡:UInt8{
 		get {
 			return 0<<2|DontFragment<<1&0b010|MoreFragments
@@ -329,11 +296,11 @@ class 📦{
 		}
 	}
 	var Offset⚡:UInt16=0b0000000000000 
-	var TimeToLive⚡:UInt8=0b00000000
+	var TimeToLive⚡:UInt8=0b11111111
 	var Protocol⚡:UInt8=0b00000000
-	var HeaderChecksum⚡:UInt16=0b0000000000000000
+	var HeaderChecksum⚡:UInt16=0b1111111111111111
 	var SourceAddr⚡:UInt32=0b00000000000000000000000000000000
-	var DestinationAddr⚡:UInt32=0b00000000000000000000000000000000
+	var DestinationAddr⚡:UInt32=0b11111111111111111111111111111111
 	var Options⚡:String=""
 	let Padding⚡:UInt32=0
 	var Datagram⚡:String=""
