@@ -19,6 +19,7 @@
 >>>- Informações de tempo, segurança e roteamentos especiais;
 >>- Checagem de cabeçalho: realiza a verificação de que as informações contidas no cabeçalhos são íntegras;
 >>>- Se a verificação indicar erro, o pacote é destruído pelo ativo que detectou;
+
 >- Campos para pacote:
 >>- Versão (4 bits): nesse caso sempre terá o valor: 0100;
 >>- Internet Header Length (4 bits): tamanho do cabeçalho x 32. *Ex*: 0101 -> 160;

@@ -168,6 +168,108 @@ func getTableFrom💻() -> [RouteItem] {
 	return table
 }
 
+
+class 📦{
+	let Version⚡:UInt8 = 0b0100
+	var InternetHeaderLength⚡:UInt8=0b0000
+	var Precedence:UInt8 = 0b000
+	var NormalDelay:UInt8 = 0b0
+	var NormalThroughput:UInt8 = 0b0
+	var NormalRelibility:UInt8 = 0b0
+	var TypeOfService⚡:UInt8 {
+		get {
+			return Precedence<<5 | NormalDelay<<4 | NormalThroughput<<3 | NormalRelibility<<2 | 0b00
+		}
+		set (TypeOfService⚡){
+			self.Precedence=TypeOfService⚡>>5&0b111
+			self.NormalDelay=TypeOfService⚡>>4&0b1
+			self.NormalThroughput=TypeOfService⚡>>3&0b1
+			self.NormalRelibility=TypeOfService⚡>>2&0b1
+		}
+	}
+	var TotalLength⚡:UInt16=0b0000000000000000
+	var Identification⚡:UInt16=0b0000000000000000
+	var DontFragment:UInt8=0b0
+	var MoreFragments:UInt8=0b0
+	var Flags⚡:UInt8{
+		get {
+			return 0<<2|DontFragment<<1&0b010|MoreFragments
+		}
+		set (Flags⚡){
+			self.DontFragment=Flags⚡>>1&0b1
+			self.MoreFragments=Flags⚡&0b1
+		}
+	}
+	var Offset⚡:UInt16=0b0000000000000 
+	var TimeToLive⚡:UInt8=0b00000000
+	var Protocol⚡:UInt8=0b00000000
+	var HeaderChecksum⚡:UInt16=0b0000000000000000
+	var SourceAddr⚡:UInt32=0b00000000000000000000000000000000
+	var DestinationAddr⚡:UInt32=0b00000000000000000000000000000000
+	var Options⚡:UInt32=0b00000000000000000000000000000000
+	var Padding⚡:UInt32=0b00000000000000000000000000000000
+	var Datagram⚡:String=""
+
+
+
+	func toString() -> String {
+		var ↪️:String=""
+		↪️+=String(Version⚡,radix:2).0⃣🤔😂😂😂😂(4)
+		↪️+=String(InternetHeaderLength⚡,radix:2).0⃣🤔😂😂😂😂(4)
+		↪️+=String(TypeOfService⚡,radix:2).0⃣🤔😂😂😂😂(8)
+		↪️+=String(TotalLength⚡,radix:2).0⃣🤔😂😂😂😂(16)
+		↪️+=String(Identification⚡,radix:2).0⃣🤔😂😂😂😂(16)
+		↪️+=String(Flags⚡,radix:2).0⃣🤔😂😂😂😂(3)
+		↪️+=String(Offset⚡,radix:2).0⃣🤔😂😂😂😂(13)
+		↪️+=String(TimeToLive⚡,radix:2).0⃣🤔😂😂😂😂(8)
+		↪️+=String(Protocol⚡,radix:2).0⃣🤔😂😂😂😂(8)
+		↪️+=String(HeaderChecksum⚡,radix:2).0⃣🤔😂😂😂😂(16)
+		↪️+=String(SourceAddr⚡,radix:2).0⃣🤔😂😂😂😂(32)
+		↪️+=String(DestinationAddr⚡,radix:2).0⃣🤔😂😂😂😂(32)
+		↪️+=String(Options⚡,radix:2).0⃣🤔😂😂😂😂(32)
+		↪️+=String(Padding⚡,radix:2).0⃣🤔😂😂😂😂(32)
+		↪️+=Datagram⚡
+		return ↪️
+	}
+
+	func toBin() -> String {
+		var tmp:String=""
+		tmp+=String(Version⚡,radix:2).0⃣🤔😂😂😂😂(4)
+		tmp+=String(InternetHeaderLength⚡,radix:2).0⃣🤔😂😂😂😂(4)
+		tmp+=String(TypeOfService⚡,radix:2).0⃣🤔😂😂😂😂(8)
+		tmp+=String(TotalLength⚡,radix:2).0⃣🤔😂😂😂😂(16)
+		tmp+=String(Identification⚡,radix:2).0⃣🤔😂😂😂😂(16)
+		tmp+=String(Flags⚡,radix:2).0⃣🤔😂😂😂😂(3)
+		tmp+=String(Offset⚡,radix:2).0⃣🤔😂😂😂😂(13)
+		tmp+=String(TimeToLive⚡,radix:2).0⃣🤔😂😂😂😂(8)
+		tmp+=String(Protocol⚡,radix:2).0⃣🤔😂😂😂😂(8)
+		tmp+=String(HeaderChecksum⚡,radix:2).0⃣🤔😂😂😂😂(16)
+		tmp+=String(SourceAddr⚡,radix:2).0⃣🤔😂😂😂😂(32)
+		tmp+=String(DestinationAddr⚡,radix:2).0⃣🤔😂😂😂😂(32)
+		tmp+=String(Options⚡,radix:2).0⃣🤔😂😂😂😂(32)
+		tmp+=String(Padding⚡,radix:2).0⃣🤔😂😂😂😂(32)
+		tmp.splitedBy(8)
+
+		//convert tmp to int and then to char
+		//convert append datagram
+
+		↪️+=Datagram⚡
+
+		//convert to data
+		return ↪️
+	}
+
+
+
+
+	func getRealInternetHeaderLength⚡() -> UInt32 {
+		return UInt32(InternetHeaderLength⚡*32)
+	}
+	func getRealTotalLength⚡() -> UInt64 {
+		return UInt64(TotalLength⚡*64)
+	}
+}
+
 extension Array where Element == RouteItem{
 	func route(IP:IPv4) -> IPv4? {
 		var defaultGate:RouteItem? = nil
@@ -188,7 +290,7 @@ extension Array where Element == RouteItem{
 
 
 extension String{
-	public func splitedBy(length: Int) -> [String] {
+	func splitedBy(length: Int) -> [String] {
 		var result = [String]()
 		for i in stride(from: 0, to: self.count, by: length) {
 			let endIndex = self.index(self.endIndex, offsetBy: -i)
@@ -196,6 +298,15 @@ extension String{
 			result.append(String(self[startIndex..<endIndex]))
 		}
 		return result.reversed()
+	}
+
+	func 0⃣🤔😂😂😂😂(size:Int) -> String { //funcao que coloca a string binaria do tamanho desejado
+		if size<=self.count{
+			return self.prefix(size)
+		}else{
+			let leadings:Int=size-self.count
+			return String(repeating: "0", count: leadings)+self
+		}
 	}
 }
 
