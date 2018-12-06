@@ -1,0 +1,21 @@
+>- Camada se resume em:
+>>- Fragmentação:
+>>>- Dividir/Remontar pacotes;
+>>>- Redes locais podem permitir pacotes muito grandes, e ao passar por gateways, são direcionados para uma rede que suporta um tamnho máximo de pacote menor que o tamanho atual do pacote;
+>>>- Campos para identificar qual a posição do pacote, e de qual pacote original  faz parte;
+>>>>- Identifica comparando os campos: identification, source, destination, and protocol;
+>>>>- Organiza informação através do campos offset;
+>>>>>- Identifica o último quando tiver o campo more-fragments == 0;
+>>>- Campo para indicar o quanto de dado carrega do pacote original;
+>>- Endereçamento:
+>>>- Indica a origem, destino final e destino intermediário;
+>>>- Tabela de roteamento: Rede destino, Máscara aplicada, Interface de Rede e Gateway;
+>- 4 mecanismos principais:
+>>- Tipo de serviço: parâmetros que indicam como gateways devem realizar a trasmissão do pacote para uma rede específica;
+>>- Tempo de vida: valor que define o limite de ativos de rede intermediários;
+>>>- Valor definido pela origem, e a cada ponto do roteamento é reduzido 1;
+>>>- Se atingir o valor 0 antes de atingir o destinatário, o pacote é destruído;
+>>- Opções: provê o controle de algumas funções necessárias e desnecessárias em todas as situações;
+>>>- Informações de tempo, segurança e roteamentos especiais;
+>>- Checagem de cabeçalho: realiza a verificação de que as informações contidas no cabeçalhos são íntegras;
+>>>- Se a verificação indicar erro, o pacote é destruído pelo ativo que detectou;
