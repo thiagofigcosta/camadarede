@@ -11,7 +11,7 @@ func preprocess(filename:String) -> String {
 
 	for char in file_content{
 		let unicodeValue=char.unicodeScalars.map { $0.value }.reduce(0, +)
-		if (unicodeValue>65536){
+		if (unicodeValue>1024){
 			new_file_content+="u"+String(unicodeValue)
 		}else{
 			new_file_content+=String(char)
