@@ -170,6 +170,72 @@ func getTableFrom💻() -> [RouteItem] {
 
 
 class 📦{
+
+	init(packet📦:Data) {
+		let string:String = String(decoding: packet📦, as: UTF8.self)
+		for i in 0..<string.count {
+			let idx=string.index[string.startIndex, offsetBy: i]
+			let unicodeValue=string[idx].unicodeScalars.map { $0.value }.reduce(0, +)
+			switch i {
+				case 0:
+					Version⚡=(unicodeValue>>4)&0b1111
+					InternetHeaderLength⚡=unicodeValue&0b1111
+				case 1:
+					Precedence=(unicodeValue>>5)&0b111
+					NormalDelay=(unicodeValue>>4)&0b1
+					NormalThroughput=(unicodeValue>>3)&0b1
+					NormalRelibility=(unicodeValue>>2)&0b1
+					TotalLength⚡=(unicodeValue&0b11)<<14 //2 of 16
+				case 2:
+					TotalLength⚡=TotalLength⚡|unicodeValue<<6 //10 of 16
+				case 3:
+					TotalLength⚡=TotalLength⚡|unicodeValue>>2 //16 of 16
+					Identification⚡=unicodeValue&0b11
+				case 4:
+					unicodeValue>>7 //not used
+					DontFragment=(unicodeValue>>6)&0b1
+					MoreFragments=(unicodeValue>>5)&0b1
+					Offset⚡=((unicodeValue>>4)&0b11111)<<11 //5 of 16
+				case 5:
+					Offset⚡=Offset⚡|unicodeValue<<4 //12 of 16
+				case 6:
+					Offset⚡=Offset⚡|(unicodeValue>>4)&0b1111 //16 of 16
+					TimeToLive⚡=(unicodeValue&0b1111)<<4 //4 of 8
+				case 7:
+					TimeToLive⚡=TimeToLive⚡|(unicodeValue>>4)&0b1111 //8 of 8
+					Protocol⚡=(unicodeValue&0b1111)<<4 //4 of 8
+				case 8:
+					Protocol⚡=Protocol⚡|(unicodeValue>>4)&0b1111 //8 of 8
+					HeaderChecksum⚡=(unicodeValue&0b1111)<<12 //4 of 16
+				case 9:
+					HeaderChecksum⚡=HeaderChecksum⚡|unicodeValue<<12 //12 of 16
+				case 10:
+					HeaderChecksum⚡=HeaderChecksum⚡|(unicodeValue>>4)&0b1111 //16 of 16
+					SourceAddr⚡=(unicodeValue&0b1111)<<28 //4 of 32
+				case 11:
+					SourceAddr⚡=SourceAddr⚡|unicodeValue<<20 //12 of 32
+				case 12:
+					SourceAddr⚡=SourceAddr⚡|unicodeValue<<12 //20 of 32
+				case 13:
+					SourceAddr⚡=SourceAddr⚡|unicodeValue<<4 //28 of 32
+				case 14:
+					SourceAddr⚡=SourceAddr⚡|(unicodeValue>>4)&0b1111 //32 of 32
+					DestinationAddr⚡=(unicodeValue&0b1111)<<28 //4 of 32
+				case 15:
+					DestinationAddr⚡=DestinationAddr⚡|unicodeValue<<20 //12 of 32
+				case 16:
+					DestinationAddr⚡=DestinationAddr⚡|unicodeValue<<12 //20 of 32
+				case 17:
+					DestinationAddr⚡=DestinationAddr⚡|unicodeValue<<4 //28 of 32
+				case 18:
+					DestinationAddr⚡=DestinationAddr⚡|(unicodeValue>>4)&0b1111 //32 of 32
+					//set Options⚡
+					//define header size and total size on toString and toBin
+
+			}
+		}
+	}
+
 	let Version⚡:UInt8 = 0b0100
 	var InternetHeaderLength⚡:UInt8=0b0000
 	var Precedence:UInt8 = 0b000
@@ -207,7 +273,7 @@ class 📦{
 	var SourceAddr⚡:UInt32=0b00000000000000000000000000000000
 	var DestinationAddr⚡:UInt32=0b00000000000000000000000000000000
 	var Options⚡:UInt32=0b00000000000000000000000000000000
-	var Padding⚡:UInt32=0b00000000000000000000000000000000
+	let Padding⚡:UInt32=0
 	var Datagram⚡:String=""
 
 
@@ -226,13 +292,14 @@ class 📦{
 		↪️+=String(HeaderChecksum⚡,radix:2).0⃣🤔😂😂😂😂(16)
 		↪️+=String(SourceAddr⚡,radix:2).0⃣🤔😂😂😂😂(32)
 		↪️+=String(DestinationAddr⚡,radix:2).0⃣🤔😂😂😂😂(32)
-		↪️+=String(Options⚡,radix:2).0⃣🤔😂😂😂😂(32)
-		↪️+=String(Padding⚡,radix:2).0⃣🤔😂😂😂😂(32)
+		var strOptions⚡=String(Options⚡,radix:2)
+		↪️+=strOptions⚡
+		↪️+=String(Padding⚡,radix:2).0⃣🤔😂😂😂😂((32-strOptions⚡.count)%32)
 		↪️+=Datagram⚡
 		return ↪️
 	}
 
-	func toBin() -> String {
+	func toBin() -> Data {
 		var tmp:String=""
 		tmp+=String(Version⚡,radix:2).0⃣🤔😂😂😂😂(4)
 		tmp+=String(InternetHeaderLength⚡,radix:2).0⃣🤔😂😂😂😂(4)
@@ -246,20 +313,17 @@ class 📦{
 		tmp+=String(HeaderChecksum⚡,radix:2).0⃣🤔😂😂😂😂(16)
 		tmp+=String(SourceAddr⚡,radix:2).0⃣🤔😂😂😂😂(32)
 		tmp+=String(DestinationAddr⚡,radix:2).0⃣🤔😂😂😂😂(32)
-		tmp+=String(Options⚡,radix:2).0⃣🤔😂😂😂😂(32)
-		tmp+=String(Padding⚡,radix:2).0⃣🤔😂😂😂😂(32)
-		tmp.splitedBy(8)
-
-		//convert tmp to int and then to char
-		//convert append datagram
-
-		↪️+=Datagram⚡
-
-		//convert to data
-		return ↪️
+		var strOptions⚡=String(Options⚡,radix:2)
+		tmp+=strOptions⚡
+		tmp+=String(Padding⚡,radix:2).0⃣🤔😂😂😂😂((32-strOptions⚡.count)%32)
+		var intArr:[String]=tmp.splitedBy(8)
+		var str:String=""
+		for int in intArr{
+			str+=String(UnicodeScalar(UInt8(int, radix: 2)!))
+		}
+		str+=Datagram⚡
+		return Data(str.utf8)
 	}
-
-
 
 
 	func getRealInternetHeaderLength⚡() -> UInt32 {
