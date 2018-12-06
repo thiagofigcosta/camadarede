@@ -22,6 +22,18 @@ class IPv4 {
 		self.value3️⃣ = value3️⃣
 	}
 
+	init(IntIP:UInt32) {
+		var remainder:UInt32!=IntIP
+		self.value0️⃣=Int(remainder%1000)
+		remainder=remainder/1000
+		self.value1️⃣=Int(remainder%1000)
+		remainder=remainder/1000
+		self.value2️⃣=Int(remainder%1000)
+		remainder=remainder/1000
+		self.value3️⃣=Int(remainder%1000)
+		remainder=remainder/1000
+	}
+
 	init(StringIp:String) {
     	let ipArray = StringIp.split(separator: ".")
     	self.value0️⃣ = Int(ipArray[0])
@@ -47,13 +59,10 @@ class IPv4 {
 			var remainder:UInt32!=IntIP
 			self.value0️⃣=Int(remainder%1000)
 			remainder=remainder/1000
-
 			self.value1️⃣=Int(remainder%1000)
 			remainder=remainder/1000
-
 			self.value2️⃣=Int(remainder%1000)
 			remainder=remainder/1000
-
 			self.value3️⃣=Int(remainder%1000)
 			remainder=remainder/1000
 		}
