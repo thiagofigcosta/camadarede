@@ -8,3 +8,6 @@ make: makepre
 
 run:
 	./network
+
+gentests:
+	swift tester.swift

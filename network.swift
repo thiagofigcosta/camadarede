@@ -2,8 +2,6 @@
 
 import Foundation
 
-// TODO funcao de mesclar pacotes
-
 extension Array where Element == RouteItem{
 	func route(IP:IPv4) -> IPv4? {
 		var defaultGate:RouteItem? = nil
@@ -35,7 +33,7 @@ extension String{
 
 	func 0⃣🤔😂😂😂😂(size:Int) -> String { //funcao que coloca a string binaria do tamanho desejado
 		if size<=self.count{
-			return String(self.prefix(size))
+			return String(self.suffix(size))
 		}else{
 			let leadings:Int=size-self.count
 			return String(repeating: "0", count: leadings)+self
@@ -69,15 +67,10 @@ class IPv4 {
 	}
 
 	init(IntIP:UInt32) {
-		var remainder:UInt32!=IntIP
-		self.value0️⃣=Int(remainder%1000)
-		remainder=remainder/1000
-		self.value1️⃣=Int(remainder%1000)
-		remainder=remainder/1000
-		self.value2️⃣=Int(remainder%1000)
-		remainder=remainder/1000
-		self.value3️⃣=Int(remainder%1000)
-		remainder=remainder/1000
+		self.value3️⃣=Int(IntIP&0b11111111)
+		self.value2️⃣=Int(IntIP>>8&0b11111111)
+		self.value1️⃣=Int(IntIP>>16&0b11111111)
+		self.value0️⃣=Int(IntIP>>24&0b11111111)
 	}
 
 	init(StringIp:String) {
@@ -94,23 +87,15 @@ class IPv4 {
 
 	var intValue: UInt32 {
 		get {
-			var ↪️:UInt32=UInt32(value3️⃣)
-			↪️+=UInt32(value2️⃣*1000)
-			↪️+=UInt32(value1️⃣*1000000)
-			↪️+=UInt32(value0️⃣*1000000000)
+			let ↪️:UInt32=UInt32(value3️⃣|value2️⃣<<8|value1️⃣<<16|value0️⃣<<24)
 			return ↪️
 		}
 
 		set(IntIP) {
-			var remainder:UInt32!=IntIP
-			self.value0️⃣=Int(remainder%1000)
-			remainder=remainder/1000
-			self.value1️⃣=Int(remainder%1000)
-			remainder=remainder/1000
-			self.value2️⃣=Int(remainder%1000)
-			remainder=remainder/1000
-			self.value3️⃣=Int(remainder%1000)
-			remainder=remainder/1000
+			self.value3️⃣=Int(IntIP&0b11111111)
+			self.value2️⃣=Int(IntIP>>8&0b11111111)
+			self.value1️⃣=Int(IntIP>>16&0b11111111)
+			self.value0️⃣=Int(IntIP>>24&0b11111111)
 		}
 	}
 
@@ -193,7 +178,7 @@ class 📦{
 		ForLoop: for i in 0..<🎁.count {
 			let idx=🎁.index(🎁.startIndex, offsetBy: i)
 			let unicodeVal🌚=🎁[idx].unicodeScalars.map { $0.value }.reduce(0, +)
-			switch i { // TODO check and fix
+			switch i {
 				case 0:
 					Version⚡=UInt8((unicodeVal🌚>>4)&0b1111)
 					InternetHeaderLength⚡=UInt8(unicodeVal🌚&0b1111)
@@ -216,7 +201,7 @@ class 📦{
 					//unicodeVal🌚>>7 //not used
 					DontFragment=UInt8((unicodeVal🌚>>6)&0b1)
 					MoreFragments=UInt8((unicodeVal🌚>>5)&0b1)
-					Offset⚡=UInt16(((unicodeVal🌚>>4)&0b11111)<<8) //5 of 13
+					Offset⚡=UInt16((unicodeVal🌚&0b11111)<<8) //5 of 13
 				case 7:
 					Offset⚡=Offset⚡|UInt16(unicodeVal🌚) //13 of 13
 				case 8:
@@ -256,10 +241,10 @@ class 📦{
 							let unicodeVal🌚=char.unicodeScalars.map { $0.value }.reduce(0, +)
 							Options⚡+=String(unicodeVal🌚,radix:2).0⃣🤔😂😂😂😂(size:8)
 						}			
-						Datagram⚡+=🎁.suffix(i+⚙byteSize)
+						Datagram⚡+=🎁.suffix(🎁.count-(i+⚙byteSize+1))
 					}else{
 						Options⚡=""
-						Datagram⚡+=🎁.suffix(i)
+						Datagram⚡+=🎁.suffix(🎁.count-i)
 					}
 					break ForLoop
 				default:
@@ -268,9 +253,10 @@ class 📦{
 			}
 		}
 
-		if (getRealInternetHeaderLength⚡()+UInt32(Datagram⚡.count*8)) != getRealTotalLength⚡(){
+		let size=getRealInternetHeaderLength⚡()+UInt32(Datagram⚡.count*8)
+		if size != getRealTotalLength⚡(){
 			//TODO error
-			print("Error on packet size")
+			print("Error on packet size \(size) and \(getRealTotalLength⚡())")
 		}
 
 		if(!✅➕()){
@@ -320,6 +306,7 @@ class 📦{
 	var Datagram⚡:String=""
 
 	func gen✅➕(){
+		return
 		let header:String=concatHeader(include✅➕:false)
 		let intArr:[String]=header.splitedBy(length:16)
 		var ➕:UInt32=0
@@ -389,6 +376,10 @@ class 📦{
 		return Data(str.utf8)
 	}
 
+	func toData() -> Data{
+		return Data(Datagram⚡.utf8)
+	}
+
 
 	func getRealInternetHeaderLength⚡() -> UInt32 {
 		return UInt32(InternetHeaderLength⚡*32)
@@ -400,16 +391,51 @@ class 📦{
 
 class NetworkLayer {
 
-	let Max📦Size:Int = 64
+	let Max📦Size:Int=64
 	var RouteTable: [RouteItem] 
 	var 📦s2️⃣Forward:[📦]
+	var 📦s2️⃣Backward:[📦]
+	var 📦s2️⃣Assembly:[UInt16:[UInt16:📦]]
 	var Id🔍:UInt16=0
 	let 📁Manager:FileManager
 
 	init() throws {
 		📦s2️⃣Forward=[📦]()
-		RouteTable=getTableFrom💻()
+		📦s2️⃣Backward=[📦]()
+		📦s2️⃣Assembly=[UInt16:[UInt16:📦]]()
+		RouteTable=NetworkLayer.getTableFrom💻()
 		📁Manager=FileManager()
+	}
+
+	func run(){
+		DispatchQueue.global(qos: .background).async {
+			while true {
+				self.generate📦()
+			}
+		}
+		DispatchQueue.global(qos: .background).async {
+			while true {
+				self.forward📦()
+			}
+		}
+		DispatchQueue.global(qos: .background).async {
+			while true {
+				self.receive📦()
+			}
+		}
+		DispatchQueue.global(qos: .background).async {
+			while true {
+				self.backward📦()
+			}
+		}
+		while true {
+			print ("Running... press 'Q' to exit")
+			let line:String=readLine() ?? " "
+			let 🎲 = line.prefix(1).uppercased()
+			if 🎲=="Q"{
+				break
+			}
+		}
 	}
 
 	func generate📦(){
@@ -417,42 +443,79 @@ class NetworkLayer {
 			Id🔍=0
 		}
 		do{
-			let datagram:Data = try Data(contentsOf: URL(fileURLWithPath:"datagram_out.pdu"))
-			let ips = try String(contentsOfFile: "transport_ips.zap", encoding: .utf8).split(separator:"-")
-			try 📁Manager.removeItem(atPath:"datagram_out.pdu") 
-			try 📁Manager.removeItem(atPath:"transport_ips.zap") 
-			let 📫=datagram.splitedBy(length:Max📦Size)
-			let srcIp:IPv4=IPv4(StringIp:String(ips[0]))
-			let dstIp:IPv4=IPv4(StringIp:String(ips[1]))
-			let timeToNot☠:UInt8=5
-			for (🔑,✉️) in 📫.enumerated(){
-				📦s2️⃣Forward.append(📦(datagram:✉️, id:Id🔍, srcIp:srcIp.intValue, dstIp:dstIp.intValue, ⏲:timeToNot☠, 📴➡️:UInt16(🔑),moreFraments:(🔑-1==📫.count),dontFrament:true))
+			if 📁Manager.fileExists(atPath:"datagram_out.pdu") && 📁Manager.fileExists(atPath:"transport_ips.zap"){
+				let datagram:Data = try Data(contentsOf: URL(fileURLWithPath:"datagram_out.pdu"))
+				let ips = try String(contentsOfFile: "transport_ips.zap", encoding: .utf8).split(separator:"-")
+				try 📁Manager.removeItem(atPath:"datagram_out.pdu") 
+				try 📁Manager.removeItem(atPath:"transport_ips.zap") 
+				let 📫=datagram.splitedBy(length:Max📦Size)
+				let srcIp:IPv4=IPv4(StringIp:String(ips[0]))
+				let dstIp:IPv4=IPv4(StringIp:String(ips[1]))
+				let timeToNot☠:UInt8=5
+				for (🔑,✉️) in 📫.enumerated(){
+					📦s2️⃣Forward.append(📦(datagram:✉️, id:Id🔍, srcIp:srcIp.intValue, dstIp:dstIp.intValue, ⏲:timeToNot☠, 📴➡️:UInt16(🔑),moreFraments:(🔑-1==📫.count),dontFrament:true))
+				}
+				Id🔍+=1
 			}
-			Id🔍+=1
 		}catch{}
 	}
 
 	func forward📦(){
 		do{
-			//TODO check if files exists before write
-			let packet:📦!=📦s2️⃣Forward.first
-			if let destiny=RouteTable.route(IP:IPv4(IntIP:packet.DestinationAddr⚡)){
-				try destiny.strValue.write(toFile: String("routed_ip.zap"), atomically: true, encoding: .utf8)
-				try packet.toBin().write(to:URL(fileURLWithPath:"packet_out.pdu"))
+			if !📁Manager.fileExists(atPath:"packet_out.pdu") && !📁Manager.fileExists(atPath:"routed_ip.zap"){
+				if 📦s2️⃣Forward.count>0 {
+					let packet:📦!=📦s2️⃣Forward.first
+					if let destiny=RouteTable.route(IP:IPv4(IntIP:packet.DestinationAddr⚡)){
+						try destiny.strValue.write(toFile:"routed_ip.zap", atomically: true, encoding: .utf8)
+						try packet.toBin().write(to:URL(fileURLWithPath:"packet_out.pdu"))
+					}
+					📦s2️⃣Forward.remove(at:0)
+				}
 			}
-			📦s2️⃣Forward.remove(at:0)
 		}catch{}
 	}
 
 	func receive📦(){
-
+		do{
+			let packet📆:Data = try Data(contentsOf: URL(fileURLWithPath:"packet_in.pdu"))
+			try 📁Manager.removeItem(atPath:"packet_in.pdu") 
+			let packet:📦=📦(packet📦:packet📆)
+			print(packet.Offset⚡)
+			if packet.MoreFragments==0 && packet.Offset⚡==0 {
+				📦s2️⃣Backward.append(packet)
+			}else{
+				📦s2️⃣Assembly[packet.Identification⚡]=[packet.Offset⚡:packet]
+				if packet.MoreFragments==0 {
+					if 📦s2️⃣Assembly[packet.Identification⚡]!.count==packet.Offset⚡+1{
+						var 📆:String=""
+						for (_,🍕📦) in 📦s2️⃣Assembly[packet.Identification⚡]!{
+							📆+=🍕📦.Datagram⚡
+						}
+						packet.Datagram⚡=📆
+						📦s2️⃣Backward.append(packet)
+					}else {
+						//TODO error
+						print ("Missing parts of package")
+					}
+					📦s2️⃣Assembly.removeValue(forKey: packet.Identification⚡)
+				}
+			}
+		}catch{}
 	}
 
-	func merge📦(){
+	func backward📦(){
+		do{
+			if !📁Manager.fileExists(atPath:"datagram_in.pdu"){
+				if 📦s2️⃣Backward.count>0 {
+					let packet:📦!=📦s2️⃣Backward.first
+					try packet.toData().write(to:URL(fileURLWithPath:"datagram_in.pdu"))
+					📦s2️⃣Backward.remove(at:0)
+				}
+			}
+		}catch{}
+	}
 
-	}	
-
-	func getTableFrom💻() -> [RouteItem] {
+	static func getTableFrom💻() -> [RouteItem] {
 		var table:[RouteItem]=[]
 		var 🎲:String=" "
 		while 🎲 != "E" {
@@ -519,3 +582,6 @@ class NetworkLayer {
 	}
 
 }
+
+try! NetworkLayer().run()
+
