@@ -4,6 +4,56 @@ import Foundation
 
 // TODO funcao de mesclar pacotes
 
+extension Array where Element == RouteItem{
+	func route(IP:IPv4) -> IPv4? {
+		var defaultGate:RouteItem? = nil
+		for item in self {
+			if (item.Net🎭.intValue==item.NetworkDestination.intValue  && item.Net🎭.intValue==IPv4().intValue){
+				defaultGate=item
+			}
+			if item.CheckSubNet(ip:IP) {
+				return item.Interface
+			}
+		}
+		if let defaultGate = defaultGate{
+			return defaultGate.Interface
+		}
+		return nil
+	}
+}
+
+extension String{
+	func splitedBy(length: Int) -> [String] {
+		var result = [String]()
+		for i in stride(from: 0, to: self.count, by: length) {
+			let endIndex = self.index(self.endIndex, offsetBy: -i)
+			let startIndex = self.index(endIndex, offsetBy: -length, limitedBy: self.startIndex) ?? self.startIndex
+			result.append(String(self[startIndex..<endIndex]))
+		}
+		return result.reversed()
+	}
+
+	func 0⃣🤔😂😂😂😂(size:Int) -> String { //funcao que coloca a string binaria do tamanho desejado
+		if size<=self.count{
+			return String(self.prefix(size))
+		}else{
+			let leadings:Int=size-self.count
+			return String(repeating: "0", count: leadings)+self
+		}
+	}
+}
+
+extension Data{
+	func splitedBy(length: Int) -> [Data] {
+		var result = [Data]()
+		for i in stride(from: 0, to: self.count, by: length) {
+			let endIndex = self.index(self.endIndex, offsetBy: -i)
+			let startIndex = self.index(endIndex, offsetBy: -length, limitedBy: self.startIndex) ?? self.startIndex
+			result.append(Data(self[startIndex..<endIndex]))
+		}
+		return result.reversed()
+	}
+}
 
 class IPv4 {
 	var value0️⃣: Int!
@@ -113,74 +163,6 @@ class RouteItem {
 	}
 }
 
-
-func getTableFrom💻() -> [RouteItem] {
-	var table:[RouteItem]=[]
-	var 🎲:String=" "
-	while 🎲 != "E" {
-		print ("Digite um comando abaixo:") 
-		print ("--------------------------------------") 
-		print ("S - Exibe a tabela de roteamento")
-		print ("A - Adicionar um novo item na tabela")
-		print ("R - Remover um item da tabela")
-		print ("D - Carregar a tabela padrão")
-		print ("E - Salvar tabela e sair do menu")
-		print ("--------------------------------------") 
-
-		let line:String=readLine() ?? " "
-		🎲 = line.prefix(1).uppercased()
-
-		switch 🎲 {
-			case "S":
-				for (i,item) in table.enumerated(){
-					print ("Id: \(i) - \(item.toString())")
-				}
-			case "A":
-				print ("Digite o IP da rede (x.x.x.x)")
-				let 🌐IP:IPv4=IPv4(StringIp: readLine() ?? "0.0.0.0")
-
-				print ("Digite a mascara da rede (x.x.x.x)")
-				let 🎭:IPv4=IPv4(StringIp: readLine() ?? "0.0.0.0")
-
-				print ("Digite o Gateway da rede (x.x.x.x)")
-				let gate:IPv4=IPv4(StringIp: readLine() ?? "0.0.0.0")
-
-				print ("Digite a Interface da rede (x.x.x.x)")
-				let inter:IPv4=IPv4(StringIp: readLine() ?? "0.0.0.0")
-
-				print ("Digite o custo da rota")
-				let cost:Int=Int(readLine() ?? "1") ?? 1
-
-				table.append(RouteItem(dst:🌐IP, 🎭:🎭, gate:gate, interface:inter, cost:cost))
-
-			case "R":
-				for (i,item) in table.enumerated(){
-					print ("Id: \(i) - \(item.toString())")
-				}
-				print ("Digite o Id do elemento a ser deletado ou 'E' para sair desta opção")
-
-				let to❌:Int=Int(readLine() ?? "-1") ?? -1
-
-				if to❌>=0 && to❌<table.count{
-					table.remove(at: to❌)
-				}
-
-			case "D":
-				table.removeAll()
-				table.append(RouteItem(dst: IPv4(StringIp:"0.0.0.0"), 🎭:IPv4(StringIp:"0.0.0.0"), out:IPv4(StringIp:"0.0.0.0")))
-
-			case "E":
-				print ("Tabela de roteamento criada com sucesso")
-
-			default:
-				print ("Erro, opção (\(🎲)) invalida")
-		}
-	}
-
-	return table
-}
-
-
 class 📦{
 
 	init(){
@@ -200,6 +182,7 @@ class 📦{
 		Protocol⚡=6 //TCP
 		SourceAddr⚡=srcIp
 		DestinationAddr⚡=dstIp
+		Options⚡=""
 		Datagram⚡=String(decoding: datagram, as: UTF8.self)
 		fixSizes()
 		gen✅➕()
@@ -415,58 +398,6 @@ class 📦{
 	}
 }
 
-extension Array where Element == RouteItem{
-	func route(IP:IPv4) -> IPv4? {
-		var defaultGate:RouteItem? = nil
-		for item in self {
-			if (item.Net🎭.intValue==item.NetworkDestination.intValue  && item.Net🎭.intValue==IPv4().intValue){
-				defaultGate=item
-			}
-			if item.CheckSubNet(ip:IP) {
-				return item.Interface
-			}
-		}
-		if let defaultGate = defaultGate{
-			return defaultGate.Interface
-		}
-		return nil
-	}
-}
-
-extension String{
-	func splitedBy(length: Int) -> [String] {
-		var result = [String]()
-		for i in stride(from: 0, to: self.count, by: length) {
-			let endIndex = self.index(self.endIndex, offsetBy: -i)
-			let startIndex = self.index(endIndex, offsetBy: -length, limitedBy: self.startIndex) ?? self.startIndex
-			result.append(String(self[startIndex..<endIndex]))
-		}
-		return result.reversed()
-	}
-
-	func 0⃣🤔😂😂😂😂(size:Int) -> String { //funcao que coloca a string binaria do tamanho desejado
-		if size<=self.count{
-			return String(self.prefix(size))
-		}else{
-			let leadings:Int=size-self.count
-			return String(repeating: "0", count: leadings)+self
-		}
-	}
-}
-
-extension Data{
-	func splitedBy(length: Int) -> [Data] {
-		var result = [Data]()
-		for i in stride(from: 0, to: self.count, by: length) {
-			let endIndex = self.index(self.endIndex, offsetBy: -i)
-			let startIndex = self.index(endIndex, offsetBy: -length, limitedBy: self.startIndex) ?? self.startIndex
-			result.append(Data(self[startIndex..<endIndex]))
-		}
-		return result.reversed()
-	}
-}
-
-
 class NetworkLayer {
 
 	let Max📦Size:Int = 64
@@ -520,4 +451,71 @@ class NetworkLayer {
 	func merge📦(){
 
 	}	
+
+	func getTableFrom💻() -> [RouteItem] {
+		var table:[RouteItem]=[]
+		var 🎲:String=" "
+		while 🎲 != "E" {
+			print ("Digite um comando abaixo:") 
+			print ("--------------------------------------") 
+			print ("S - Exibe a tabela de roteamento")
+			print ("A - Adicionar um novo item na tabela")
+			print ("R - Remover um item da tabela")
+			print ("D - Carregar a tabela padrão")
+			print ("E - Salvar tabela e sair do menu")
+			print ("--------------------------------------") 
+
+			let line:String=readLine() ?? " "
+			🎲 = line.prefix(1).uppercased()
+
+			switch 🎲 {
+				case "S":
+					for (i,item) in table.enumerated(){
+						print ("Id: \(i) - \(item.toString())")
+					}
+				case "A":
+					print ("Digite o IP da rede (x.x.x.x)")
+					let 🌐IP:IPv4=IPv4(StringIp: readLine() ?? "0.0.0.0")
+
+					print ("Digite a mascara da rede (x.x.x.x)")
+					let 🎭:IPv4=IPv4(StringIp: readLine() ?? "0.0.0.0")
+
+					print ("Digite o Gateway da rede (x.x.x.x)")
+					let gate:IPv4=IPv4(StringIp: readLine() ?? "0.0.0.0")
+
+					print ("Digite a Interface da rede (x.x.x.x)")
+					let inter:IPv4=IPv4(StringIp: readLine() ?? "0.0.0.0")
+
+					print ("Digite o custo da rota")
+					let cost:Int=Int(readLine() ?? "1") ?? 1
+
+					table.append(RouteItem(dst:🌐IP, 🎭:🎭, gate:gate, interface:inter, cost:cost))
+
+				case "R":
+					for (i,item) in table.enumerated(){
+						print ("Id: \(i) - \(item.toString())")
+					}
+					print ("Digite o Id do elemento a ser deletado ou 'E' para sair desta opção")
+
+					let to❌:Int=Int(readLine() ?? "-1") ?? -1
+
+					if to❌>=0 && to❌<table.count{
+						table.remove(at: to❌)
+					}
+
+				case "D":
+					table.removeAll()
+					table.append(RouteItem(dst: IPv4(StringIp:"0.0.0.0"), 🎭:IPv4(StringIp:"0.0.0.0"), out:IPv4(StringIp:"0.0.0.0")))
+
+				case "E":
+					print ("Tabela de roteamento criada com sucesso")
+
+				default:
+					print ("Erro, opção (\(🎲)) invalida")
+			}
+		}
+
+		return table
+	}
+
 }
