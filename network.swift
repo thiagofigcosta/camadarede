@@ -2,12 +2,8 @@
 
 import Foundation
 
-// TODO funcao de dividir pacotes
 // TODO funcao de mesclar pacotes
 
-// TODO roteamento modificar headers
-
-// TODO rotinas principais
 
 class IPv4 {
 	var value0️⃣: Int!
@@ -186,6 +182,29 @@ func getTableFrom💻() -> [RouteItem] {
 
 
 class 📦{
+
+	init(){
+	}
+
+	init(datagram:Data, id:UInt16, srcIp:UInt32, dstIp:UInt32, ⏲:UInt8, 📴➡️:UInt16,moreFraments:Bool,dontFrament:Bool){
+		Version⚡=0b0100
+		Precedence=0b010
+		NormalDelay=0b1
+		NormalThroughput=0b0
+		NormalRelibility=0b1
+		Identification⚡=id
+		DontFragment=dontFrament ? 1 : 0
+		MoreFragments=moreFraments ? 1 : 0 
+		Offset⚡=📴➡️ 
+		TimeToLive⚡=⏲
+		Protocol⚡=6 //TCP
+		SourceAddr⚡=srcIp
+		DestinationAddr⚡=dstIp
+		Datagram⚡=String(decoding: datagram, as: UTF8.self)
+		fixSizes()
+		gen✅➕()
+	}
+
 	init(packet📦:Data) {
 		let 🎁:String = String(decoding: packet📦, as: UTF8.self)
 		ForLoop: for i in 0..<🎁.count {
@@ -435,4 +454,62 @@ extension String{
 	}
 }
 
-var RouteTable: [RouteItem] = getTableFrom💻()
+extension Data{
+	func splitedBy(length: Int) -> [Data] {
+		var result = [Data]()
+		for i in stride(from: 0, to: self.count, by: length) {
+			let endIndex = self.index(self.endIndex, offsetBy: -i)
+			let startIndex = self.index(endIndex, offsetBy: -length, limitedBy: self.startIndex) ?? self.startIndex
+			result.append(Data(self[startIndex..<endIndex]))
+		}
+		return result.reversed()
+	}
+}
+
+
+class NetworkLayer {
+
+	let Max📦Size:Int = 64
+	var RouteTable: [RouteItem] 
+	var 📦s2️⃣Forward:[📦]
+	var Id🔍:UInt16=0
+	let 📁Manager:FileManager
+
+	init() throws {
+		📦s2️⃣Forward=[📦]()
+		RouteTable=getTableFrom💻()
+		📁Manager=FileManager()
+	}
+
+	func forward📦(){
+		if 📦s2️⃣Forward.count==0 && Id🔍>=32768{
+			Id🔍=0
+		}
+		do{
+			let datagram:Data = try Data(contentsOf: URL(fileURLWithPath:"datagram_out.pdu"))
+			let ips = try String(contentsOfFile: "transport_ips.zap", encoding: .utf8).split(separator:"-")
+			try 📁Manager.removeItem(atPath:"datagram_out.pdu") 
+			try 📁Manager.removeItem(atPath:"transport_ips.zap") 
+			let 📫=datagram.splitedBy(length:Max📦Size)
+			let srcIp:IPv4=IPv4(StringIp:String(ips[0]))
+			let dstIp:IPv4=IPv4(StringIp:String(ips[1]))
+			let timeToNot☠:UInt8=5
+			for (🔑,✉️) in 📫.enumerated(){
+				📦s2️⃣Forward.append(📦(datagram:✉️, id:Id🔍, srcIp:srcIp.intValue, dstIp:dstIp.intValue, ⏲:timeToNot☠, 📴➡️:UInt16(🔑),moreFraments:(🔑-1==📫.count),dontFrament:true))
+			}
+			Id🔍+=1
+		}catch{}
+		do{
+			let packet:📦!=📦s2️⃣Forward.first
+			if let destiny=RouteTable.route(IP:IPv4(IntIP:packet.DestinationAddr⚡)){
+				try destiny.strValue.write(toFile: String("routed_ip.zap"), atomically: true, encoding: .utf8)
+				try packet.toBin().write(to:URL(fileURLWithPath:"packet_out.pdu"))
+			}
+			📦s2️⃣Forward.remove(at:0)
+		}catch{}
+	}
+
+	func receive📦(){
+
+	}
+}

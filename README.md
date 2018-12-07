@@ -43,8 +43,6 @@ Instale a linguagem `swift` (versão 4.2) e os pacotes necessários, através do
 
 ```
 sudo apt-get install build-essential clang libicu-dev
-
-
 ```
 **Ubuntu 18.04**:
 ```
