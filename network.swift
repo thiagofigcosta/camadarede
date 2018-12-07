@@ -480,7 +480,6 @@ class NetworkLayer {
 			let packet📆:Data = try Data(contentsOf: URL(fileURLWithPath:"packet_in.pdu"))
 			try 📁Manager.removeItem(atPath:"packet_in.pdu") 
 			let packet:📦=📦(packet📦:packet📆)
-			print(packet.Offset⚡)
 			if packet.MoreFragments==0 && packet.Offset⚡==0 {
 				📦s2️⃣Backward.append(packet)
 			}else{
