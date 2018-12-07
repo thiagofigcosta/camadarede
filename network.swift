@@ -481,7 +481,7 @@ class NetworkLayer {
 		📁Manager=FileManager()
 	}
 
-	func forward📦(){
+	func generate📦(){
 		if 📦s2️⃣Forward.count==0 && Id🔍>=32768{
 			Id🔍=0
 		}
@@ -499,7 +499,11 @@ class NetworkLayer {
 			}
 			Id🔍+=1
 		}catch{}
+	}
+
+	func forward📦(){
 		do{
+			//TODO check if files exists before write
 			let packet:📦!=📦s2️⃣Forward.first
 			if let destiny=RouteTable.route(IP:IPv4(IntIP:packet.DestinationAddr⚡)){
 				try destiny.strValue.write(toFile: String("routed_ip.zap"), atomically: true, encoding: .utf8)
@@ -512,4 +516,8 @@ class NetworkLayer {
 	func receive📦(){
 
 	}
+
+	func merge📦(){
+
+	}	
 }
