@@ -517,6 +517,9 @@ class NetworkLayer {
 	static func getTableFrom💻() -> [RouteItem] {
 		var table:[RouteItem]=[]
 		var 🎲:String=" "
+		print ("-------------------------------------")
+		print ("-Bem vindo ao Protocolo Mickey Mouse-")
+		print ("-------------------------------------")
 		while 🎲 != "E" {
 			print ("Digite um comando abaixo:") 
 			print ("--------------------------------------") 
@@ -583,4 +586,3 @@ class NetworkLayer {
 }
 
 try! NetworkLayer().run()
-
