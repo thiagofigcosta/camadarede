@@ -254,7 +254,7 @@ class 📦{
 		}
 
 		let size=getRealInternetHeaderLength⚡()+UInt32(Datagram⚡.count*8)
-		if size != getRealTotalLength⚡(){
+		if size != getRealTotalLength⚡(){ //TODO fix me
 			//TODO error
 			print("Error on packet size \(size) and \(getRealTotalLength⚡())")
 		}
@@ -306,7 +306,7 @@ class 📦{
 	var Datagram⚡:String=""
 
 	func gen✅➕(){
-		return
+		return //TODO fix me
 		let header:String=concatHeader(include✅➕:false)
 		let intArr:[String]=header.splitedBy(length:16)
 		var ➕:UInt32=0
@@ -339,6 +339,7 @@ class 📦{
 	}
 
 	func ✅➕() -> Bool {
+		return true //TODO fix me
 		let header:String=concatHeader(include✅➕:true)
 		let intArr:[String]=header.splitedBy(length:16)
 		var ➕:UInt32=0
